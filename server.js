@@ -6,54 +6,68 @@ app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
 app.use(bodyParser.json());              // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-//Create Database Connection
-var pgp = require('pg-promise')();
-
 // set the view engine to ejs
-app.set('views', '/home/node/app/views');
-app.engine('html', require('ejs').renderFile)
+//app.set('views', '/home/node/app/views');
+//app.engine('html', require('ejs').renderFile)
+//app.set('view engine', 'ejs');
+//app.use(express.static('resources/styles'));
+//app.use(express.static(__dirname + {index: 'index.ejs'}));
 app.set('view engine', 'ejs');
-app.use(express.static('resources/styles'));
-app.use(express.static(__dirname + '/'));
-
-const dev_dbConfig = {
-    host: 'ec2-52-0-114-209.compute-1.amazonaws.com',
-	port: 5432,
-	database: "d6kushg2shkeat",
-	user:  "guiuokmmdjtphs",
-	password: "5893f10f2075df912fffd4cdf7009697fa587f1a19343ace208c7f89782a60e7"
-	/*host: 'ec2-52-0-114-209.compute-1.amazonaws.com',
-	port: 5432,
-	database: "d6kushg2shkeat",
-	user:  "guiuokmmdjtphs",
-	password: "5893f10f2075df912fffd4cdf7009697fa587f1a19343ace208c7f89782a60e7"*/
-};
-
-//add code from lab 10 
-const dbConfig = dev_dbConfig;
-
-//configure port
-/*
-const server = app.listen(process.env.PORT || 3000, () => {
-    console.log(`Express running → PORT ${server.address().port}`);
-  });
-*/
-
-// Heroku Postgres patch for v10
-// fixes: https://github.com/vitaly-t/pg-promise/issues/711
-
-pgp.pg.defaults.ssl = {rejectUnauthorized: false};
-
-
-var db = pgp(dbConfig);
+app.use(express.static(__dirname + '/'));// Set the relative path; makes accessing the resource directory easier
 
 app.get('/', function(req, res){
-    res.render('main.ejs')
+    res.render('index.ejs');
 });
 
-app.get('/about', function(req, res) {
-	res.render('reviews.ejs');
-  });
+app.get('/reviews', function(req, res){
+    res.render('reviews.ejs');
+});
+
+app.post('/get_feed', function(req, res) {
+	var tvshow = req.body.searchBar; //TODO: Remove null and fetch the param (e.g, req.body.param_name); Check the NYTimes_home.ejs file or console.log("request parameters: ", req) to determine the parameter names
+  
+	console.log(`https://www.tvmaze.com/search/shows?q=${tvshow}`);
+	if(tvshow) {
+	  axios({
+		url: `https://www.tvmaze.com/search/shows?q=${tvshow}`,
+		  method: 'GET',
+		  dataType:'json',
+		})
+		  .then(items => {
+			// TODO: Return the reviews to the front-end (e.g., res.render(...);); Try printing 'items' to the console to see what the GET request to the Twitter API returned.
+			// Did console.log(items) return anything useful? How about console.log(items.data.results)?
+			// Stuck? Look at the '/' route above
+			console.log(items.data.results);
+			res.render('pages/main',{
+			my_title: "TV Show Results",
+			//items: items.data,
+			error: false,
+			message: ''
+			})
+		  })
+		  .catch(error => {
+			console.log(error);
+			res.render('pages/main', {
+			my_title: "TV Show Results",
+			//items: items.data,
+			error: true,
+			message: error
+			})
+		  });
+  
+  
+	}
+	else {
+	  // TODO: Render the home page and include an error message (e.g., res.render(...);); Why was there an error? When does this code get executed? Look at the if statement above
+	  // Stuck? On the web page, try submitting a search query without a search term
+	  res.render('pages/main', {
+		my_title: "TV Show Results",
+		//items: items.data,
+		error: true,
+		message: 'No tv shows found!'
+	  })
+	}
+  });  
 
 app.listen(3000);
 console.log('3000 is the magic port');
