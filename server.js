@@ -133,12 +133,16 @@ app.post('/addreview', function(req, res) {
 
 app.get('/reviews', function(req, res) {
 	var query = 'SELECT * FROM reviews;';
-	db.any(query)
-		.then(function (rows) {
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query)
+        ]);
+    })
+		.then(data => {
 			console.log(data);
 			res.render('reviews.ejs',{
 				my_title: "Reviews Table",
-				reviewData: data
+				result: data[0]
 			})
 
 		})
