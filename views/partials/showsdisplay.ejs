@@ -1,63 +1,12 @@
-<% if(items == null) {
-    var error_message = '<div class="alert alert-danger"> Could not find shows. Try again! </div>';
-%>
- <% error_message %>
-
- <% }
- if (items) {
-     var cards = '';
-     var counter = 0;
-
-     items.forEach(function(item) {
-         <div id="modal" class="modal fate bd-example-modal-lg">
-             <div class = "modal-dialog modal-lg"> 
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modal_label">Add Review</h5>
-                        <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="close_modal" 
-                        ></button>
-                    </div>
-
-                    <div class="modal_body">
-                        <form id="reviewForm" action="/addReview" method="post">
-                            <div class="form-group raw">
-                                <label for="name" class="col-sn-4 form-label">Show name</label>
-                                <div class="col-sn-8">
-                                    <input
-                                    class="form-control"
-                                    id="reviewName"
-                                    name="name"
-                                    value="<%- item[0].name %>"
-
-                                    readonly
-                                    >
-                                </div>
-                            </div>
-
-                        <div class="form-group raw">
-                            <form id="reviewForm" action="/addReview" method="post">
-                                <div class="form-group raw">
-                                    <label for="name" class="col-sn-4 form-label">Show name</label>
-                                    <div class="col-sn-8">
-                                        <input
-                                        class="form-control"
-                                        id="reviewName"
-                                        name="name"
-                                        value="<%- item[0].name %>"
-            
-                                        readonly
-                                        >
-                                    </div>
-                                </div>
-
-                        </form>
-                    </div>
-                </div>
-             </div> 
-        </div>
-     })
- }
+<body>
+    <div id="myData"></div>
+</body>
+<script>
+    var mainContainer = document.getElementById("myData");
+    for (var i = 0; i < data.length; i++)
+    {
+        var div = document.createElement("div");
+        div.innerHTML = 'Name: ' + data[i].name + ' ' + data[i].summary;
+        mainContainer.appendChild(div);
+    }
+</script>
