@@ -18,4 +18,26 @@
         </form>
     </div>
     </div>
+    <table class="table table-bordered" id="stats_table">
+        <tr>
+            <th class="align-bottom" rowspan="2">TV Show</th>
+            <th class="align-bottom"rowspan="2">Review</th>
+            <th class="align-bottom" rowspan="2">Review Date</th>
+        </tr>
+        <% if (reviewData.length != 0) {
+            var i = 1;
+            reviewData.forEach(function(data) {
+        %>
+        <tr>
+             <td> <%= data.tv_show %> </td>
+             <td> <%= data.review %> </td>
+             <td> <%= data.review_date %> </td>
+         </tr>
+         <% i++; }) %>
+         <% } else { %>
+        <tr>
+            <td colspan="7"> NO Data Found </td>
+        </tr>
+        <% } %>
+    </table>
 </body>
