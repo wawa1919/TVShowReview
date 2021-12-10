@@ -37,6 +37,13 @@
         float: left;
     }
 
+    .leftGroup {
+        float: left;
+    }
+    .rightGroup {
+        float: right;
+    }
+
 </style>
 <body>
     <div class="image"> 
@@ -68,6 +75,7 @@
               
                     <form action= "/addreview" method= "post">
                         <div class="form-group">
+                            <div class = "leftGroup">
                             <div class="showLabel">
                                 <input type="text" class="form-control input-lg" name="show_label" value="" placeholder="Book Name">
                             </div>
@@ -75,6 +83,9 @@
                             <div class="showName">
                                 <input type="text" class="form-control input-lg" name="show_text" value="" placeholder="Book Name" readonly>
                             </div>
+                            </div>
+
+                            <div class = "rightGroup">
                             <div class="form-group">
                                 <div class="showReview">
                                     <input type="text" class="form-control input-lg" name="review_label" value="" placeholder="Enter your review here:">
@@ -84,13 +95,13 @@
                                 <div class="review">
                                     <input type="text" class="form-control input-lg" name="review_text" value="" placeholder="">
                                 </div>
-                          </div>
+                            </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="my_submit_button" class="btn btn-primary submit-btn" data-dismiss="modal" onclick = "this.form.submit()">Submit</button>
+                            </div>
                         </div>
               
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <button id="my_submit_button" class="btn btn-primary submit-btn" data-dismiss="modal" onclick = "this.form.submit()">Submit</button>
-                        </div>
                     </form>
               
                   </div>
